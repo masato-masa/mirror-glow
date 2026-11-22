@@ -3,6 +3,7 @@
 @import './shared/chrome.css';
 
 :root {
+  --level-cols: 4;
   /* 盤は夜の色。光が一番はっきり見えるように、ここだけ暗くする（共通部分の色域は変えない）。 */
   --night: #1d2146;
   --night-cell: #262b5b;
