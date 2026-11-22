@@ -37,6 +37,8 @@ interface Spec {
   minMirrorsLit?: number;
   /** 目先の最善手が罠: 1 手でいちばん多くほしをつける鏡は、唯一の最少の解に入っていない */
   darkFirst?: boolean;
+  /** 最初から星が 1 つ以上ついていて、最少の解のどれかの鏡を 1 枚だけ返すと、ついている星が減る（あえて一度消す） */
+  unlight?: boolean;
 }
 
 const SPEC: Spec[] = [
@@ -46,6 +48,7 @@ const SPEC: Spec[] = [
   { name: 'かたい かがみ', trick: '動かせない鏡をよけて、動かせる鏡の順を読む', mirrors: [6, 8], stars: [3, 3], crystals: [1, 2], locked: [1, 3], walls: [3, 5], pars: [3, 3, 4, 4], split: true },
   { name: 'ぐるぐる ひかり', trick: 'クリスタル 2 つで光が 3 本に分かれ、同じ鏡を何度も通る。1 枚の返し方が 3 本の枝を同時に変える', mirrors: [7, 9], stars: [4, 4], crystals: [2, 2], locked: [1, 2], walls: [3, 5], pars: [4, 4, 5, 5], shared: true, split: true, minSplits: 2 },
   { name: 'めさきの わな', trick: '1 手でいちばん星がつく鏡は、答えに入っていない。目先の明るさに釣られず、鏡の組み合わせで読む', mirrors: [5, 8], stars: [2, 3], crystals: [0, 1], locked: [0, 1], walls: [3, 5], pars: [2, 3, 3, 4], darkFirst: true },
+  { name: 'あえて けす', trick: '最初からついている星を、あえて一度消す鏡がある。ついているものを守ろうとすると行き詰まる', mirrors: [5, 8], stars: [3, 3], crystals: [0, 1], locked: [0, 1], walls: [3, 5], pars: [2, 3, 3, 4], unlight: true },
 ];
 
 const between = (rnd: () => number, [lo, hi]: [number, number]): number => lo + Math.floor(rnd() * (hi - lo + 1));
@@ -128,6 +131,13 @@ function find(spec: Spec, slot: number, par: number): Found | null {
       let trap = true;
       for (let k = 0; k < b.mirrors.length; k++) if (trace(b, 1 << k).lit.size === top && (s.best >> k) & 1) trap = false;
       if (!trap) { no('trap'); continue; }
+    }
+    if (spec.unlight) {
+      const lit0 = trace(b, 0).lit.size;
+      if (lit0 < 1) { no('lit0'); continue; }
+      let down = false;
+      for (let k = 0; k < b.mirrors.length; k++) if (((s.best >> k) & 1) && trace(b, 1 << k).lit.size < lit0) down = true;
+      if (!down) { no('down'); continue; }
     }
     // 解に出てこない（反転しない）鏡が多い盤は、飾りが多いので避ける
     let used = 0;
