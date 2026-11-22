@@ -4,3 +4,4 @@ dist/
 .playwright-cli/
 *.tmp.mjs
 *.tmp.ts
+assets-src/
