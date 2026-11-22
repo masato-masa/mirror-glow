@@ -1,0 +1,14 @@
+{
+  "name": "かがみのひかり",
+  "short_name": "かがみ",
+  "start_url": "/mirror-glow/",
+  "scope": "/mirror-glow/",
+  "display": "standalone",
+  "background_color": "#f6f5ef",
+  "theme_color": "#f6f5ef",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/mirror-glow/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/mirror-glow/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,37 @@
+/* 共通のクロームは shared/ にある（出どころは C:\claude\shared-ui）。ここはこのゲームの色と外枠。 */
+@import './shared/tokens.css';
+@import './shared/chrome.css';
+
+:root {
+  /* 盤は夜の色。光が一番はっきり見えるように、ここだけ暗くする（共通部分の色域は変えない）。 */
+  --night: #1d2146;
+  --night-cell: #262b5b;
+  --night-line: #343a75;
+  --beam: #ffd45a;
+  --beam-core: #fff6cf;
+  --glass: #8fd8ff;
+  --star: #f3c55a;
+  --star-off: #e4dcd5;
+  --ink: var(--title);
+  --ink-soft: var(--muted);
+  --radius: 14px;
+  --shadow: var(--shadow-xs);
+}
+
+html,
+body {
+  min-height: 100%;
+  overscroll-behavior: none;
+}
+
+.app {
+  max-width: 592px;
+  margin: 0 auto;
+}
+
+.star {
+  color: var(--star-off);
+}
+.star.on {
+  color: var(--star);
+}
