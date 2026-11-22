@@ -2,7 +2,7 @@ import { type Board, H, W, isSlash, trace } from '../../engine.ts';
 import { boardOf, getLevel, nextLevelId, starsFor } from '../../levels.ts';
 import { nextTap } from '../../solver.ts';
 import { iconBack, iconGear, iconHelp, iconHint, iconReset, iconUndo } from '../icons.ts';
-import { sprite } from '../sprites.ts';
+import { GEM_OFF, GEM_ON, sprite } from '../sprites.ts';
 import { openHelpSheet, openSettingsSheet } from '../sheets.ts';
 import { sfx } from '../sfx.ts';
 import type { Deps } from '../types.ts';
@@ -110,6 +110,7 @@ export function renderGame(root: HTMLElement, levelId: string, deps: Deps): () =
       const el = cellEls[i]!;
       const was = el.classList.contains('on');
       el.classList.toggle('on', on);
+      if (on !== was) el.querySelector<HTMLImageElement>('img')!.src = on ? GEM_ON : GEM_OFF;
       if (on && !was && play) {
         el.classList.remove('pop');
         void el.offsetWidth;
@@ -145,12 +146,14 @@ export function renderGame(root: HTMLElement, levelId: string, deps: Deps): () =
     deps.store.record(level.id, stars, taps);
     sfx.clear();
     q('.stars').innerHTML = [0, 1, 2].map((i) => `<span class="star${i < stars ? ' on' : ''}" style="--i:${i}">★</span>`).join('');
-    q('.message-moves').textContent = taps <= level.par ? `${taps} タップ — さいたん!` : `${taps} タップ（さいたん ${level.par}）`;
+    q('.message-moves').textContent =
+      taps <= level.par ? `${taps} タップ — さいたん!` : `${taps} タップ ・ あと ${taps - level.par} へらすと ★3`;
     msg.hidden = false;
   }
 
   function clearHint(): void {
     cellEls.forEach((e) => e.classList.remove('hint'));
+    beamsEl.querySelector('.preview')?.remove();
     window.clearTimeout(hintTimer);
   }
 
@@ -208,7 +211,13 @@ export function renderGame(root: HTMLElement, levelId: string, deps: Deps): () =
       return;
     }
     cellEls[board.mirrors[k]!]!.classList.add('hint');
-    hintTimer = window.setTimeout(clearHint, 4000);
+    // その 1 タップのあとの光の道すじを、点滅する点線で見せる（押す前に結果が分かる）
+    const after = trace(board, mask ^ (1 << k));
+    const lines = after.segments
+      .map((sg) => `<line x1="${sg.c0 + 0.5}" y1="${sg.r0 + 0.5}" x2="${clamp(sg.c1 + 0.5, W)}" y2="${clamp(sg.r1 + 0.5, H)}"/>`)
+      .join('');
+    beamsEl.insertAdjacentHTML('beforeend', `<g class="preview">${lines}</g>`);
+    hintTimer = window.setTimeout(clearHint, 3500);
   };
 
   // 指を置いた瞬間に反応する

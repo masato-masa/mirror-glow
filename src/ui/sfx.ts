@@ -78,6 +78,7 @@ const buzz = (ms: number): void => {
 export const sfx = {
   /** 鏡をひっくり返した（カチッ） */
   flip(): void {
+    if (!gate('flip', 45)) return; // 連打でも音が重ならない
     tone(900, 0.05, 'square', 0.05, 0, 600, 2600);
     tone(1500, 0.03, 'sine', 0.04, 0.01);
     buzz(6);

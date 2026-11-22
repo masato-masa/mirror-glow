@@ -6,28 +6,32 @@ import lamp from '../assets/lamp.png';
 import mirror from '../assets/mirror.png';
 import wall from '../assets/wall.png';
 
-const img = (src: string, cls = ''): string => `<img class="${cls}" src="${src}" alt="" draggable="false" />`;
+const img = (src: string, cls: string): string => `<img class="spr ${cls}" src="${src}" alt="" draggable="false" />`;
+
+/** 1 部品 = 1 要素（<img>）。星は点灯で src を差し替える（game.ts）。 */
+export const GEM_OFF = gemOff;
+export const GEM_ON = gemOn;
 
 export function sprite(ch: string): string {
   switch (ch) {
     case '#':
-      return `<i class="spr wall">${img(wall)}</i>`;
+      return img(wall, 'wall');
     case '*':
-      return `<i class="spr gem">${img(gemOff, 'off')}${img(gemOn, 'onimg')}</i>`;
+      return img(gemOff, 'gem');
     case 'Y':
-      return `<i class="spr crystal">${img(crystal)}</i>`;
+      return img(crystal, 'crystal');
     case '/':
-    case '\\':
-      return `<i class="spr mirror">${img(mirror)}</i>`;
+    case String.fromCharCode(92):
+      return img(mirror, 'mirror');
     case 'a':
-      return `<i class="spr mirror fixed slash">${img(mirror)}</i>`;
+      return img(mirror, 'mirror slash');
     case 'b':
-      return `<i class="spr mirror fixed back">${img(mirror)}</i>`;
+      return img(mirror, 'mirror back');
     case '^':
     case '>':
     case 'v':
     case '<':
-      return `<i class="spr lamp">${img(lamp)}</i>`;
+      return img(lamp, 'lamp');
     default:
       return '';
   }

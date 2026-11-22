@@ -31,6 +31,10 @@ interface Spec {
   shared?: boolean;
   /** 最少の解で、クリスタルが光を割ること */
   split?: boolean;
+  /** 最少の解で、クリスタルが光を割る回数の下限 */
+  minSplits?: number;
+  /** 最少の解で光が通る鏡のマスの数の下限（光が行き来する） */
+  minMirrorsLit?: number;
 }
 
 const SPEC: Spec[] = [
@@ -38,6 +42,7 @@ const SPEC: Spec[] = [
   { name: 'ひとつで ふたつ', trick: '同じ鏡に光が 2 回通る。1 枚が 2 つの役をする', mirrors: [5, 6], stars: [2, 2], crystals: [0, 0], locked: [0, 0], walls: [3, 5], pars: [2, 2, 3, 3], shared: true },
   { name: 'プリズム', trick: 'クリスタルが光を 2 本に分ける。どちらの枝も生かす', mirrors: [5, 7], stars: [2, 3], crystals: [1, 1], locked: [0, 0], walls: [3, 5], pars: [2, 3, 3, 3], split: true },
   { name: 'かたい かがみ', trick: '動かせない鏡をよけて、動かせる鏡の順を読む', mirrors: [6, 8], stars: [3, 3], crystals: [1, 2], locked: [1, 3], walls: [3, 5], pars: [3, 3, 4, 4], split: true },
+  { name: 'ぐるぐる ひかり', trick: 'クリスタル 2 つで光が 3 本に分かれ、同じ鏡を何度も通る。1 枚の返し方が 3 本の枝を同時に変える', mirrors: [7, 9], stars: [4, 4], crystals: [2, 2], locked: [1, 2], walls: [3, 5], pars: [4, 4, 5, 5], shared: true, split: true, minSplits: 2 },
 ];
 
 const between = (rnd: () => number, [lo, hi]: [number, number]): number => lo + Math.floor(rnd() * (hi - lo + 1));
@@ -99,7 +104,7 @@ function find(spec: Spec, slot: number, par: number): Found | null {
     if (s.total > par + 3) continue; // 解が多すぎる盤は、どう押しても通る
     const t = trace(b, s.best);
     if (t.segments.length < 9) continue;
-    if (spec.split && t.splits < 1) continue;
+    if (spec.split && t.splits < (spec.minSplits ?? 1)) continue;
     if (spec.shared) {
       let two = false;
       for (const cell of b.mirrors) if ((t.passes.get(cell) ?? 0) >= 2) two = true;
