@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const sharp = require('sharp');
 
-const { data, info } = await sharp('assets-src/parts.png').ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+const { data, info } = await sharp(process.argv[2] ?? 'assets-src/parts3d.png').ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 const { width: w, height: h } = info;
 const white = (i) => data[i] > 222 && data[i + 1] > 222 && data[i + 2] > 222;
 const seen = new Uint8Array(w * h);
@@ -41,7 +41,7 @@ for (const [y0, y1] of rows) {
     for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) if (data[(y * w + x) * 4 + 3] > 0) { ty0 = Math.min(ty0, y); ty1 = Math.max(ty1, y); }
     await sharp(data, { raw: { width: w, height: h, channels: 4 } })
       .extract({ left: x0, top: ty0, width: x1 - x0 + 1, height: ty1 - ty0 + 1 })
-      .resize({ width: 128, height: 128, fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize({ width: 160, height: 160, fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
       .png({ compressionLevel: 9 })
       .toFile(`src/assets/${names[k++]}.png`);
   }

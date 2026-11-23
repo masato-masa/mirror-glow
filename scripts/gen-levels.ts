@@ -50,16 +50,17 @@ interface Spec {
 }
 
 const SPEC: Spec[] = [
-  { name: 'はじめの かがみ', trick: '鏡を 1 枚ひっくり返して、光を曲げる', mirrors: [3, 4], stars: [1, 2], crystals: [0, 0], locked: [0, 0], walls: [2, 4], pars: [1, 1, 2, 2] },
-  { name: 'ひとつで ふたつ', trick: '同じ鏡に光が 2 回通る。1 枚が 2 つの役をする', mirrors: [5, 6], stars: [2, 2], crystals: [0, 0], locked: [0, 0], walls: [3, 5], pars: [2, 2, 3, 3], shared: true },
-  { name: 'プリズム', trick: 'クリスタルが光を 2 本に分ける。どちらの枝も生かす', mirrors: [5, 7], stars: [2, 3], crystals: [1, 1], locked: [0, 0], walls: [3, 5], pars: [2, 3, 3, 3], split: true },
-  { name: 'かたい かがみ', trick: '動かせない鏡をよけて、動かせる鏡の順を読む', mirrors: [6, 8], stars: [3, 3], crystals: [1, 2], locked: [1, 3], walls: [3, 5], pars: [3, 3, 4, 4], split: true },
-  { name: 'ぐるぐる ひかり', trick: 'クリスタル 2 つで光が 3 本に分かれ、同じ鏡を何度も通る。1 枚の返し方が 3 本の枝を同時に変える', mirrors: [7, 9], stars: [4, 4], crystals: [2, 2], locked: [1, 2], walls: [3, 5], pars: [4, 4, 5, 5], shared: true, split: true, minSplits: 2 },
-  { name: 'めさきの わな', trick: '1 手でいちばん星がつく鏡は、答えに入っていない。目先の明るさに釣られず、鏡の組み合わせで読む', mirrors: [5, 8], stars: [2, 3], crystals: [0, 1], locked: [0, 1], walls: [3, 5], pars: [2, 3, 3, 4], darkFirst: true },
-  { name: 'あえて けす', trick: '最初からついている星を、あえて一度消す鏡がある。ついているものを守ろうとすると行き詰まる', mirrors: [5, 8], stars: [3, 3], crystals: [0, 1], locked: [0, 1], walls: [3, 5], pars: [2, 3, 3, 4], unlight: true },
-  { name: 'からみあう', trick: '鏡 8〜10 枚・クリスタル 1〜2。1 枚の返し方が複数の枝を同時に変えるので、枝ごとに考えてから組み合わせる', mirrors: [8, 10], stars: [4, 5], crystals: [1, 2], locked: [1, 2], walls: [3, 5], pars: [5, 5, 6, 6], shared: true, split: true, maxMirrors: 10, maxTotal: 8 },
-  { name: 'めさきの わな 2', trick: '鏡 8〜10 枚。1 手でいちばん星がつく鏡は答えに入っていない。目先の明るさを捨てて、組み合わせで読む', mirrors: [8, 10], stars: [3, 4], crystals: [1, 2], locked: [1, 2], walls: [3, 5], pars: [5, 5, 6, 6], darkFirst: true, maxMirrors: 10, maxTotal: 8 },
-  { name: 'ちょうじょう', trick: '鏡 10〜11 枚・クリスタル 2・動かせない鏡。どの鏡も二役以上で、最少の解は 1 通りだけ', mirrors: [10, 11], stars: [4, 5], crystals: [2, 2], locked: [1, 2], walls: [3, 4], pars: [5, 6, 6, 7], shared: true, split: true, minSplits: 2, maxMirrors: 11, maxTotal: 9 },
+  // 規則: 光はほしで止まる。光の本数 = 1 + クリスタルの数（以下）なので、ほしの数はそれ以下にする。
+  { name: 'はじめの かがみ', trick: '鏡を 1 枚ひっくり返して、光をほしへ届ける', mirrors: [3, 4], stars: [1, 1], crystals: [0, 0], locked: [0, 0], walls: [2, 4], pars: [1, 1, 2, 2] },
+  { name: 'ひとつで ふたつ', trick: '同じ鏡に光が 2 回通る。1 枚が 2 つの役をする', mirrors: [5, 6], stars: [1, 1], crystals: [0, 0], locked: [0, 1], walls: [3, 5], pars: [2, 3, 3, 4], shared: true },
+  { name: 'プリズム', trick: 'クリスタルが光を 2 本に分ける。ほしは光を止めるので、枝ごとに 1 つずつ届ける', mirrors: [4, 6], stars: [2, 2], crystals: [1, 1], locked: [0, 0], walls: [3, 5], pars: [2, 2, 3, 3], split: true },
+  { name: 'かたい かがみ', trick: '動かせない鏡をよけて、動かせる鏡の順を読む', mirrors: [5, 7], stars: [2, 3], crystals: [1, 2], locked: [1, 3], walls: [3, 5], pars: [3, 3, 4, 4], split: true },
+  { name: 'ぐるぐる ひかり', trick: 'クリスタル 2 つで光が 3 本に分かれる。1 枚の返し方が複数の枝を同時に変える', mirrors: [6, 8], stars: [3, 3], crystals: [2, 2], locked: [1, 2], walls: [3, 5], pars: [4, 4, 5, 5], shared: true, split: true, minSplits: 2 },
+  { name: 'めさきの わな', trick: '1 手でいちばん星がつく鏡は、答えに入っていない。目先の明るさに釣られず、鏡の組み合わせで読む', mirrors: [5, 8], stars: [2, 2], crystals: [1, 1], locked: [0, 1], walls: [3, 5], pars: [3, 4, 4, 4], darkFirst: true, maxTotal: 12 },
+  { name: 'あえて けす', trick: '最初からついている星を、あえて一度消す鏡がある。ついているものを守ろうとすると行き詰まる', mirrors: [5, 8], stars: [2, 3], crystals: [1, 2], locked: [0, 1], walls: [3, 5], pars: [3, 3, 4, 4], unlight: true },
+  { name: 'からみあう', trick: '鏡 8〜10 枚・クリスタル 2。1 枚の返し方が複数の枝を同時に変えるので、枝ごとに考えてから組み合わせる', mirrors: [8, 10], stars: [3, 3], crystals: [2, 2], locked: [1, 2], walls: [3, 5], pars: [5, 5, 5, 6], shared: true, split: true, maxMirrors: 10, maxTotal: 10 },
+  { name: 'めさきの わな 2', trick: '鏡 8〜10 枚。1 手でいちばん星がつく鏡は答えに入っていない。目先の明るさを捨てて、組み合わせで読む', mirrors: [7, 10], stars: [2, 3], crystals: [1, 2], locked: [1, 2], walls: [3, 5], pars: [4, 5, 5, 5], darkFirst: true, maxMirrors: 10, maxTotal: 16 },
+  { name: 'ちょうじょう', trick: '鏡 10〜11 枚・クリスタル 2〜3・動かせない鏡。どの鏡も二役以上で、最少の解は 1 通りだけ', mirrors: [10, 11], stars: [3, 4], crystals: [2, 3], locked: [1, 2], walls: [3, 4], pars: [5, 5, 6, 6], shared: true, split: true, minSplits: 2, maxMirrors: 11, maxTotal: 10 },
 ];
 
 const between = (rnd: () => number, [lo, hi]: [number, number]): number => lo + Math.floor(rnd() * (hi - lo + 1));
