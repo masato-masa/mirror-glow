@@ -4,5 +4,5 @@
 
 - 公開: https://masato-masa.github.io/mirror-glow/
 - 規則: 光はまっすぐ進み、鏡（／ ＼）で曲がる。鏡のタップでむきが逆になる。星に光が通るとつく。クリスタルは光を左右 2 本に分ける。
-- 面は 4 ワールド × 4 面。`npm run levels`（手筋ごとの条件で探索）→ `npm test`（par・最少の解が 1 つ・解の再生を全面で再検証）。
+- 面は 10 ワールド × 4 面（W8 からみあう・W9 めさきの わな 2・W10 ちょうじょうは鏡 8〜11 枚・par 5〜7 の難面。新しい部品は足さず、数と手数で上げた）。`npm run levels`（手筋ごとの条件で探索）→ `npm test`（par・最少の解が 1 つ・解の再生を全面で再検証）。
 - `npm run dev` / `npm run build` / `npm run deploy`
