@@ -133,6 +133,17 @@
   box-shadow: 0 0 0 2px #cfd2e6;
 }
 
+/* 最初の面だけ、押せる鏡を最初の 1 タップまでゆっくり脈打たせる（説明文なしで「押す」と分かる） */
+.board.first .cell.tap::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 2px var(--beam);
+  animation: hintpulse 800ms ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
 /* 光。太い下の線がにじみ、細い上の線が芯。 */
 .beams {
   position: absolute;
@@ -149,13 +160,13 @@
 }
 .beams .glow line {
   stroke: var(--beam);
-  stroke-width: 12;
-  opacity: 0.45;
+  stroke-width: 14;
+  opacity: 0.55;
   filter: blur(3px);
 }
 .beams .core line {
   stroke: var(--beam-core);
-  stroke-width: 4;
+  stroke-width: 5;
 }
 
 .beams .preview line {

@@ -53,7 +53,7 @@ export function renderGame(root: HTMLElement, levelId: string, deps: Deps): () =
         </div>
       </header>
       <div class="board-wrap">
-        <div class="board" style="--cols:${W};--rows:${H}">
+        <div class="board${level.id === '1-1' ? ' first' : ''}" style="--cols:${W};--rows:${H}">
           ${cells}
           <svg class="beams" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"></svg>
           <div class="toast" hidden></div>
@@ -168,6 +168,7 @@ export function renderGame(root: HTMLElement, levelId: string, deps: Deps): () =
       c.classList.add('nope');
       return;
     }
+    boardEl.classList.remove('first');
     history.push(mask);
     mask ^= 1 << k;
     taps++;
@@ -187,6 +188,7 @@ export function renderGame(root: HTMLElement, levelId: string, deps: Deps): () =
     tapsEl.textContent = '0';
     undoBtn.disabled = true;
     msg.hidden = true;
+    if (level.id === '1-1') boardEl.classList.add('first');
     clearHint();
     render();
   };
